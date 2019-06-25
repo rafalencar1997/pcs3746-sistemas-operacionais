@@ -10,10 +10,10 @@
 #include "hello_world.h"
 
 #include "stack.h"
-
+#include "read_write_number.h"
 #define len(_arr) ((int)((&_arr)[1] - _arr))
 
-static const char * const programs[] = { "/stack_push", "/stack_pop", "/monitor" };
+static const char * const programs[] = { "/read_write_number_0_pet","/read_write_number_1_pet" };
 
 void panic(const char *msg)
 {
