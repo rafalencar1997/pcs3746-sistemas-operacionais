@@ -4,4 +4,4 @@ docker run -ti --rm \
     -v "$PWD":/home/student/src/initramfs \
     -v "$PWD/../initramfs_base":/home/student/src/initramfs_base \
     -v "$PWD/docker_cmd.sh":/default_cmd.sh \
-    tiagoshibata/pcs3746
+    rafalencar1997/pcs3746
