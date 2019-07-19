@@ -7,65 +7,23 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <string.h>
 
-__attribute__((noreturn)) void panic(const char *msg)
+int main()
 {
-	perror(msg);
-	exit(-1);
-}
-
-__attribute__((noreturn)) void usage(const char *program_name)
-{
-	fprintf(stderr, "Usage: %s [-p] file\n"
-		"\t-p\tPopulate the mapping\n", program_name);
-	exit(-1);
-}
-
-size_t get_file_size(const char *filename) {
-	struct stat st;
-	if (stat(filename, &st) == -1)
-		panic("stat");
-	return st.st_size;
-}
-
-void *map_fd(int fd, size_t length, int flags) {
-	void *mapped_file = mmap(NULL, length, PROT_READ, flags, fd, 0);
-	if (mapped_file == MAP_FAILED)
-		panic("mmap");
-	return mapped_file;
-}
-
-int main(int argc, char **argv)
-{
-	int mmap_flags = MAP_SHARED;
-	int c;
-	while ((c = getopt(argc, argv, "p")) != -1) {
-		switch (c) {
-			case 'p':
-			mmap_flags |= MAP_POPULATE;
-			break;
-
-			case '?':
-			usage(argv[0]);
-			return -1;
-		}
+	//printf("\n\n Esse e o valor: %s\n\n Esse eh o argc, ta bom agora?? %d \n\n\n", argv[1], argc);
+	//int FREE_SIZE = atoi(argv[1]);
+	int FREE_SIZE = 30000;
+	int MAX_SIZE = FREE_SIZE * 1024 / 3;
+	printf("\nAlocando array\n");
+	int *array = malloc(MAX_SIZE * sizeof(int));
+	printf("Populando array...\n");
+	for (int i=0; i < MAX_SIZE; i++)
+	{
+		array[i]=i;
+	//	if(i % 500000 == 0)
+		printf("%d\n", i);
 	}
-
-	if (optind != argc - 1)  // Only 1 name parameter should be used
-		usage(argv[0]);
-
-	char *filename = argv[optind];
-	size_t length = get_file_size(filename);
-	int fd = open(filename, O_RDONLY);
-	if (fd == -1)
-		panic("open");
-
-	char *data = map_fd(fd, length, mmap_flags);
-	printf("File mapped to %" PRIuPTR "\n", (uintptr_t)data);
-	for (size_t i = 0; i < length; i++)
-		printf("%zu: %.2x (%c)\n", i, data[i], isprint(data[i]) ? data[i] : '.');
-
-	if (munmap(data, length))
-		panic("munmap");
+	printf("Array criado: %zu\n", sizeof(array));
 	return 0;
 }

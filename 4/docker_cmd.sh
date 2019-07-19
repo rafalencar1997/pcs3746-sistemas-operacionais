@@ -38,7 +38,7 @@ fi
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-
 
 BOOT=$SRC/linux/arch/arm/boot
-qemu-system-arm -M versatilepb -m 64M -nographic -kernel $BOOT/zImage -dtb $BOOT/dts/versatile-pb.dtb \
+qemu-system-arm -S -s -M versatilepb -m 64M -nographic -kernel $BOOT/zImage -dtb $BOOT/dts/versatile-pb.dtb \
     -initrd build/rootfs.gz \
     -append "root=/dev/sda virtio_pci.force_legacy=1" \
     -drive file=build/swap.img,format=raw,if=virtio,index=0 \
